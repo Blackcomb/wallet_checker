@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='lookupApp'>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +31,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body ng-controller='mainPageCtrl'>
 
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top">
@@ -60,9 +60,9 @@
 						Get results.</h1>
 					<form class="form-inline" role="form">
 					  <div class="form-group">
-					    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
+					    <input ng-model="addressID" class="form-control" id="exampleInputEmail1" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
 					  </div>
-					  <button type="submit" class="btn btn-warning btn-lg">Lookup</button>
+					  <button type="submit" ng-click='lookupAddress(addressID)' class="btn btn-warning btn-lg">Lookup</button>
 					</form>					
 				</div><!-- /col-lg-6 -->
 				<div class="col-lg-6">

@@ -1,10 +1,6 @@
 /*
- * Author: Carlos Alvarez
- * URL: http://alvarez.is
- *
- * Project Name: FLATTY - Free Bootstrap 3 Theme
- * Version: 1.0
- * URL: http://blacktie.co
+ * This CSS theme is a modified version of FLATTY by Carlos Alvarez, you can find his work at http://alvarez.is
+ * Modifications done by Adam Coard - acoard.com
  */
 
 body {
@@ -122,7 +118,7 @@ i {
 
 /* HeaderWrap */
 #headerwrap {
-	/* background: url(../img/bg01.jpg) no-repeat center top; */
+	 /*background: url(../img/bg01.jpg) no-repeat center top; */
 	background-color: #3498db;
 	margin-top: -20px;
 	padding-top:200px;
