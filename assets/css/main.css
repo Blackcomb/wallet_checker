@@ -59,9 +59,13 @@ a {
     transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
+table a {
+    color: #efefef;
+}
+
 a:hover,
 a:focus {
-    color: #7b7b7b;
+    color: #F78A00;
     text-decoration: none;
     outline: 0;
 }

@@ -46,7 +46,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Info/Contact Us</a></li>
+            <li><a href="#info">Info/Contact Us</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -60,13 +60,15 @@
 						Get results.</h1>
 					<form class="form-inline" role="form">
 					  <div class="form-group">
-					    <input ng-model="addressID" class="form-control" id="exampleInputEmail1" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
+					    <input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
 					  </div>
-					  <button type="submit" ng-click='lookupAddress(addressID)' class="btn btn-warning btn-lg">Lookup</button>
+					  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn btn-warning btn-lg">Lookup</button>
 					</form>
 					<div class='overview'>
 						<p>Address: {{output.Address}}</p>
-						<p>Balance (BTC): {{output.BTC}}</p>	
+						<p>Balance (BTC): {{output.BTC}}</p>
+						<p>Total Received: {{output['Total Received']}}</p>
+						<p>Total Sent: {{output['Total Sent']}}</p>	
 					</div>				
 				</div><!-- /col-lg-6 -->
 
@@ -85,8 +87,8 @@
 							<tr ng-repeat='transaction in output.Transactions'>
 								<td class="hash"><div class='limitText'><a href="https://blockchain.info/tx/{{transaction.Hash}}">{{transaction.Hash}}</a></div></td>
 								<td>{{transaction.Amount}}</td>
-								<td>Recieved!</td>
-								<td><p class='limitText' ng-repeat='addr in transaction.InputAddress'>{{addr}}</p></td>
+								<td><p ng-if="transaction.Amount >= 0">Received!</p><p ng-if="transaction.Amount < 0">Sent!</p></td>
+								<td><p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
 								<td>{{transaction['Total Balance']}}</td>
 							</tr>
 						</table>
@@ -98,7 +100,7 @@
 	</div><!-- /headerwrap -->
 	
 	
-	<div class="container">
+	<div id="info" class="container">
 		<div class="row mt centered">
 			<div class="col-lg-6 col-lg-offset-3">
 				<h1>WELCOME</h1>
