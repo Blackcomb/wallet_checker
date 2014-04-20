@@ -3,8 +3,8 @@ var lookupApp = angular.module('lookupApp', []);
 glob = '';
 
 lookupApp.controller('mainPageCtrl', function($scope, $http){
+	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = false;
-	// $scope.addressID = '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'}
 
 	$scope.lookupAddress = function(address){		
@@ -21,12 +21,18 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 				for (z = 0; z < data.txs[i]['inputs'].length; z++){
 					inputAddr.push(data.txs[i]['inputs'][z]['prev_out']['addr'])
 				}
+				var outputAddr = [];
+				for (z = 0; z < data.txs[i]['out'].length; z++){
+					outputAddr.push(data.txs[i]['out'][z]['addr'])
+				}
 
 				transactions[i] = {
 					'Hash' : data.txs[i]['hash'],
 					'Amount' : data.txs[i]['result'] / 100000000,
 					'Total Balance' : data.txs[i]['balance'] / 100000000,
-					'InputAddress' : inputAddr
+					'InputAddress' : inputAddr,
+					'OutputAddress' : outputAddr,
+					'Date' : timeConverter(data.txs[i]['time'])
 				};
 			};
 
@@ -40,3 +46,21 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 		});
 	}
 });
+
+window.onload = function(){
+	$('.poppop').popover({trigger: 'hover'});
+};
+
+//Thanks StackOverflow
+function timeConverter(UNIX_timestamp){
+ var a = new Date(UNIX_timestamp*1000); //Multiplied by 1000 because JS keeps time in miliseconds.  Unix time = seconds.
+ var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+     var year = a.getFullYear();
+     var month = months[a.getMonth()];
+     var date = a.getDate();
+     var hour = a.getHours();
+     var min = a.getMinutes();
+     var sec = a.getSeconds();
+     var time = date+', '+month+' '+year+' '+hour+':'+min+':'+sec ;
+     return time;
+ }

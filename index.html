@@ -23,7 +23,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular.min.js" ></script>
     <script src="assets/js/lookup.js"></script>
-    
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -72,27 +71,26 @@
 					</div>				
 				</div><!-- /col-lg-6 -->
 
-				<div class="col-lg-6">
+				<div class="col-lg-6" id='output' ng-show='loaded'>
 					<!-- <img class="img-responsive" src="assets/img/ipad-hand.png" alt=""> -->
-					<div id='output' ng-show='loaded'>
 						<h1>Ledger</h1>
 						<table>
 							<tr>
 								<th>Transaction Hash</th>
-								<th>Amount</th>
-								<th>Received/Sent</th>
+								<th>Amount <span class='poppop' data-container="body" data-toggle="popover" data-placement="top" data-content="Negative values indicate that Bitcoin is being sent.  Positive values mean it is being received.">(?)</span></th>
+								<th>Date</th>
 								<th>Address</th>
 								<th>Total Balance</th>
 							</tr>
 							<tr ng-repeat='transaction in output.Transactions'>
 								<td class="hash"><div class='limitText'><a href="https://blockchain.info/tx/{{transaction.Hash}}">{{transaction.Hash}}</a></div></td>
 								<td>{{transaction.Amount}}</td>
-								<td><p ng-if="transaction.Amount >= 0">Received!</p><p ng-if="transaction.Amount < 0">Sent!</p></td>
-								<td><p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
+								<td>{{transaction.Date}}</td>
+								<td ng-if='transaction.Amount >= 0'><p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
+								<td ng-if='transaction.Amount < 0'><p class='limitText' ng-repeat='addr in transaction.OutputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
 								<td>{{transaction['Total Balance']}}</td>
 							</tr>
 						</table>
-					</div> <!-- #output -->
 				</div><!-- /col-lg-6 -->
 				
 			</div><!-- /row -->
