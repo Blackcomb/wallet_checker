@@ -146,3 +146,29 @@ i {
 	font-weight: 300;
 	letter-spacing: 1px;
 }
+
+.hash div, .hash div a {
+    width: 150px;
+    color: white;   
+}
+
+#output {
+    margin: 60px 0px 15px 0px;
+    color: white;
+}
+
+.overview p {
+    color: white;
+    font-size: 20px;
+}
+
+.limitText {
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+   background-color: #217BB6;
+}

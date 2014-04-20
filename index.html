@@ -63,13 +63,33 @@
 					    <input ng-model="addressID" class="form-control" id="exampleInputEmail1" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
 					  </div>
 					  <button type="submit" ng-click='lookupAddress(addressID)' class="btn btn-warning btn-lg">Lookup</button>
-					</form>					
+					</form>
+					<div class='overview'>
+						<p>Address: {{output.Address}}</p>
+						<p>Balance (BTC): {{output.BTC}}</p>	
+					</div>				
 				</div><!-- /col-lg-6 -->
+
 				<div class="col-lg-6">
 					<!-- <img class="img-responsive" src="assets/img/ipad-hand.png" alt=""> -->
 					<div id='output' ng-show='loaded'>
-						<p>Address: {{output.Address}}</p>
-						<p>Balance (BTC): {{output.BTC}}</p>
+						<h1>Ledger</h1>
+						<table>
+							<tr>
+								<th>Transaction Hash</th>
+								<th>Amount</th>
+								<th>Received/Sent</th>
+								<th>Address</th>
+								<th>Total Balance</th>
+							</tr>
+							<tr ng-repeat='transaction in output.Transactions'>
+								<td class="hash"><div class='limitText'><a href="https://blockchain.info/tx/{{transaction.Hash}}">{{transaction.Hash}}</a></div></td>
+								<td>{{transaction.Amount}}</td>
+								<td>Recieved!</td>
+								<td><p class='limitText' ng-repeat='addr in transaction.InputAddress'>{{addr}}</p></td>
+								<td>{{transaction['Total Balance']}}</td>
+							</tr>
+						</table>
 					</div> <!-- #output -->
 				</div><!-- /col-lg-6 -->
 				
@@ -81,22 +101,22 @@
 	<div class="container">
 		<div class="row mt centered">
 			<div class="col-lg-6 col-lg-offset-3">
-				<h1>Your Landing Page<br/>Looks Wonderful Now.</h1>
-				<h3>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</h3>
+				<h1>WELCOME</h1>
+				<h3>Wanna look up some bitcoin addresses?  Well, lucky you.  You're in the right place.</h3>
 			</div>
 		</div><!-- /row -->
 		
 		<div class="row mt centered">
 			<div class="col-lg-4">
 				<img src="assets/img/ser01.png" width="180" alt="">
-				<h4>1 - Browser Compatibility</h4>
-				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+				<h4>WHAT THIS SITE DOES</h4>
+				<p>You give this site a Bitcoin address, and it'll check the Blockchain to see what tranactions are associated with that address.  You can even see a running total.</p>
 			</div><!--/col-lg-4 -->
 
 			<div class="col-lg-4">
 				<img src="assets/img/ser02.png" width="180" alt="">
-				<h4>2 - Email Campaigns</h4>
-				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+				<h4>CAVEATS</h4>
+				<p>While this site accurately shows you how many BTC are in a given address, it's not an accurate representation of how many BTC someone has.  After every bitcoin transaction there is additional "change" which the sender then sends back to themself at a separate address.</p>
 
 			</div><!--/col-lg-4 -->
 
