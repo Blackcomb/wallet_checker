@@ -14,6 +14,13 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+footer {
+    padding: 25px 0px 25px 0px;
+    text-align: center;   
+    background: #ccc;
+    color: black;
+}
+
 /* Titles */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lato', sans-serif;
@@ -65,7 +72,7 @@ table a {
 
 a:hover,
 a:focus {
-    color: #F78A00;
+    color: white;
     text-decoration: none;
     outline: 0;
 }
@@ -91,6 +98,7 @@ a:after {
 .navbar-default {
 	background-color: #3498db;
 	border-color: transparent;
+    border-bottom: 3px solid #3882cd;
 }
 
 .navbar-default .navbar-brand {
@@ -111,9 +119,10 @@ a:after {
 .form-control {
 	height: 42px;
 	font-size: 18px;
-	width: 280px;
 }
-
+form {
+    padding-bottom: 20px;
+}
 i {
 	margin: 8px;
 	color: #3498db; 
@@ -157,7 +166,7 @@ i {
 }
 
 #output {
-    margin: 0px 0px 25px 0px;
+    margin: 0px 0px 25px 25px;
     color: white;
     padding-left: 0px;
 }
@@ -165,8 +174,10 @@ i {
 .overview p {
     color: white;
     font-size: 20px;
+    word-break: break-all;   
 }
 
+/*Table Stylings*/
 .limitText {
     width: 150px;
     overflow: hidden;
@@ -174,12 +185,34 @@ i {
     white-space: nowrap;
 }
 
+th {
+ text-align: center;
+ width: 90px;
+}
+
 tbody tr:nth-child(even) {
    background-color: #217BB6;
 }
 
-tr:hover {
+#output > table > tbody > tr:hover {
  background: #454CE1;   
 }
 
-tr:first-child:hover {background: none;}
+#output > table > tbody > tr:first-child:hover {background: none;}
+
+.largeicon {
+ font-size: 128px;   
+}
+
+i.fa.fa-exclamation-triangle.largeicon {
+    color: #BF744E;
+}
+
+i.fa.fa-btc.largeicon {
+    color: black;
+}
+
+#errorLoad p {
+    color: white;
+}
+

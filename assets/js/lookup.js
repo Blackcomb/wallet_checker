@@ -6,13 +6,13 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = false;
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'}
+	var USD;
 
 	$scope.lookupAddress = function(address){		
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
 		$http.get(url).success(function(data){
 			$scope.loaded = true;
 			glob = data;
-
 			//Take Blockchain.info's response of transactions and put it in a format we want.
 			//index 0 is the newest; index length - 1 is the first transaction.
 			var transactions = [];
@@ -43,6 +43,18 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 				'Total Sent': data.addresses[0].total_sent / 100000000,
 				'Transactions' : transactions
 			};
+		}).
+		error(function(data){
+			$scope.loadError = true;
+			console.log("Error on blockchain.info query");
+		});
+	}
+	$scope.getUSD = function(){
+		var url = 'https://blockchain.info/ticker?cors=true'
+		$http.get(url).success(function(data){
+			console.log(data);
+			USD = data.USD;
+			$scope.output['USD'] = $scope.output['BTC']
 		});
 	}
 });
