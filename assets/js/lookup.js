@@ -12,6 +12,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
 		$http.get(url).success(function(data){
 			$scope.loaded = true;
+			$scope.loadError = false;
 			glob = data;
 			//Take Blockchain.info's response of transactions and put it in a format we want.
 			//index 0 is the newest; index length - 1 is the first transaction.
@@ -46,13 +47,11 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 		}).
 		error(function(data){
 			$scope.loadError = true;
-			console.log("Error on blockchain.info query");
 		});
 	}
 	$scope.getUSD = function(){
 		var url = 'https://blockchain.info/ticker?cors=true'
 		$http.get(url).success(function(data){
-			console.log(data);
 			USD = data.USD;
 			$scope.output['USD'] = $scope.output['BTC']
 		});
