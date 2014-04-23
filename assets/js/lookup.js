@@ -51,26 +51,37 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 				'Transactions' : transactions
 			};
 
-
+			if ($scope.tableParams){$scope.tableParams.reload();} //Enables new data to be loaded, e.g. on a new address.
 			var data = transactions;
-			$scope.tableParams.reload(); //Enables new data to be loaded, e.g. on a new address.
+			$scope.tableParams = new ngTableParams({
+		        page: 1,            
+		        count: 5           // items per page
+		    }, {
+		        total: transactions.length, 
+		        getData: function($defer, params) {
+		        	var data = transactions;
+		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		            console.log(orderedData);
+		        }
+		    });
 		}).
 		error(function(data){
 			$scope.loadError = true;
 		});
 	}
-
-	$scope.tableParams = new ngTableParams({
-        page: 1,            
-        count: 5           // items per page
-    }, {
-        total: data.length, 
-        getData: function($defer, params) {
-        	var data = transactions;
-            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
-    });
+	// $scope.tableParams = new ngTableParams({
+ //        page: 1,            
+ //        count: 5           // items per page
+ //    }, {
+ //        total: data.length, 
+ //        getData: function($defer, params) {
+ //        	var data = transactions;
+ //            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+ //            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+ //            console.log(orderedData);
+ //        }
+ //    });
 
 	$scope.getUSD = function(){
 		var url = 'https://blockchain.info/ticker?cors=true'
