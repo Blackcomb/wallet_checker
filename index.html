@@ -72,12 +72,10 @@
 						<p>Balance (BTC): {{output.BTC}}</p>
 						<p>Total Received: {{output['Total Received']}}</p>
 						<p>Total Sent: {{output['Total Sent']}}</p>	
-						<button ng-click='reloadTable()'>reloadTable()</button>
 					</div>	
 			</div> <!-- .row -->
 			<div class="row">
-				<div class="col-md-12" id='output'> <!-- ng-show='loaded' -->
-					<!-- <img class="img-responsive" src="assets/img/ipad-hand.png" alt=""> -->
+				<div class="col-md-12" id='output' ng-show='loaded'> 
 						<h1 class='centered'>Ledger</h1>
 						    <table ng-show='!loading' ng-table="tableParams" class="table">
 						        <tr ng-repeat="transaction in $data">
@@ -100,23 +98,6 @@
 						            </td>
 						        </tr>
 						    </table>
-						<!-- <table ng-table="tableParams">
-							<tr>
-								<th><span class='poppop' data-container="body" data-toggle="popover" data-placement="top" data-content="Since the ellipses are added with CSS the full string is part of the page.  That means CTRL+F works, and right click > copy will copy the full string past the ellipses.">Transaction Hash (?)</span</th>
-								<th><span class='poppop' data-container="body" data-toggle="popover" data-placement="top" data-content="Negative values indicate that Bitcoin is being sent.  Positive values mean it is being received.">(?)</span></th>
-								<th>Date</th>
-								<th>Address</th>
-								<th>Total Balance</th>
-							</tr>
-							<tr ng-repeat='transaction in output.Transactions'>
-								<td class="hash"><div class='limitText'><a href="https://blockchain.info/tx/{{transaction.Hash}}">{{transaction.Hash}}</a></div></td>
-								<td>{{transaction.Amount}}</td>
-								<td>{{transaction.Date}}</td>
-								<td ng-if='transaction.Amount >= 0'><p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
-								<td ng-if='transaction.Amount < 0'><p class='limitText' ng-repeat='addr in transaction.OutputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
-								<td>{{transaction['Total Balance']}}</td>
-							</tr>
-						</table> -->
 				</div><!-- #output-->
 				<div id="errorLoad" ng-if='loadError'>
 					<h1>We're sorry, it seems the servers are down.</h1>
