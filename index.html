@@ -79,22 +79,21 @@
 						<h1 class='centered'>Ledger</h1>
 						    <table ng-show='!loading' ng-table="tableParams" class="table">
 						        <tr ng-repeat="transaction in $data">
-						            <td data-title="'Hash'">
-						                {{transaction.Hash}}
+						            <td data-title="'Hash'" sortable="'Hash'">
+						                <p class='limitText'>{{transaction.Hash}}</p>
 						            </td>
-						            <td data-title="'Date'">
+						            <td data-title="'Date'" sortable='"Date"'>
 						            	{{transaction.Date}}
 						            </td>
-						            <td data-title="'Address'">
-						            	<!-- <p ng-repeat='addr in transaction.InputAddress' ng-click='user.AddressID= addr;lookupAddress(user.addressID)'></p> -->
-						            	<p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="javascript:void(0)">{{addr}}</a></p>
+						            <td data-title="'Address'" sortable='"InputAddress"'>
+						            	<p ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="javascript:void(0)">{{addr}}</a></p>
 						            </td>
 
-						            <td data-title="'Amount'">
+						            <td data-title="'Amount'" sortable="'Amount'">
 						                <span ng-class="{ 'plus': transaction.Amount >= 0,'minus': transaction.Amount < 0 }">{{transaction['Amount']}}</span>
 						            </td>
-						            <td data-title="'Total Balance'" sortable="money">
-						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Total Balance']}}</span>
+						            <td data-title="'Balance'" sortable="'Balance'">
+						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Balance']}}</span>
 						            </td>
 						        </tr>
 						    </table>
