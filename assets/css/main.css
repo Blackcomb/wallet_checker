@@ -129,12 +129,13 @@ i {
 }
 
 
+
 /* HeaderWrap */
 #headerwrap {
 	 /*background: url(../img/bg01.jpg) no-repeat center top; */
 	background-color: #3498db;
 	margin-top: -20px;
-	padding-top:200px;
+	padding-top:75px;
 	background-attachment: relative;
 	background-position: center center;
 	min-height: 650px;
@@ -174,7 +175,8 @@ i {
 .overview p {
     color: white;
     font-size: 20px;
-    word-break: break-all;   
+    word-break: break-all; 
+    margin-top: 10px;  
 }
 
 /*Table Stylings*/
@@ -191,14 +193,12 @@ th {
 }
 
 tbody tr:nth-child(even) {
-   background-color: #217BB6;
+   background-color: #3cb1ff;
 }
 
 #output > table > tbody > tr:hover {
  background: #454CE1;   
 }
-
-#output > table > tbody > tr:first-child:hover {background: none;}
 
 .largeicon {
  font-size: 128px;   
@@ -208,11 +208,53 @@ i.fa.fa-exclamation-triangle.largeicon {
     color: #BF744E;
 }
 
-i.fa.fa-btc.largeicon {
+i.fa.fa-btc.largeicon, i.fa-spinner {
     color: black;
+}
+
+#headerwrap .fa-spinner {
+    color: #ccc
+}
+
+.loadingSpinner {
+    position: absolute;
+    left: -50px;
 }
 
 #errorLoad p {
     color: white;
+}
+
+.ng-table .plus, .ng-table .minus {
+    font-weight: bold;
+    padding-left: 18px;
+    position: relative;
+}
+.ng-table .plus:before, .ng-table .minus:before {
+    content:"";
+    border-width: 4px;
+    border-style:solid;
+    left: 8px;
+    top: 50%;
+    position: absolute;
+    margin-top: -2px;
+}
+.ng-table .plus {
+    color: green;
+}
+.ng-table .plus:before {
+    border-color: green;
+    border-top:none;
+    border-left:4px solid transparent;
+    border-right:4px solid transparent;
+}
+.ng-table .minus {
+    color: red;
+}
+.ng-table .minus:before {
+    border-color: red;
+    border-bottom:none;
+    border-left:4px solid transparent;
+    border-right:4px solid transparent;
 }
 

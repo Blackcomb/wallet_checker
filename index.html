@@ -13,8 +13,9 @@
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom CSS & plugins -->
     <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/ng-table.css" rel="stylesheet">
 
     <!-- Fonts from Google Fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
@@ -22,9 +23,9 @@
 	<!-- JavaScript libraries/frameworks -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular.min.js" ></script>
-    <script src="assets/js/lookup.js"></script>
     <script src='assets/js/emailhandler.js'></script>
-
+    <script src='assets/js/ng-table.js'></script>    
+    <script src="assets/js/lookup.js"></script>
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -57,27 +58,48 @@
 	<div id="headerwrap">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-6 col-md-offset-3">
 					<h1>Enter an address.</br>
 						Get results.</h1>
 					<form class="form-inline" role="form">
 					  <div class="form-group">
-					    <input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
+					    <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
 					  </div>
 					  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn btn-warning btn-lg">Lookup</button>
-					</form>
-					<div class='overview'>
-						<p>Address: {{output.Address}}</p>
+					</form>			
+				</div><!-- /col-md-6 -->
+				<div class='overview col-md-3'>
 						<p>Balance (BTC): {{output.BTC}}</p>
 						<p>Total Received: {{output['Total Received']}}</p>
 						<p>Total Sent: {{output['Total Sent']}}</p>	
-					</div>				
-				</div><!-- /col-lg-6 -->
-
-				<div class="col-md-7 col-sm-12 col-md-offset-1 col-sm-offset-1" id='output' ng-show='loaded'>
+					</div>	
+			</div> <!-- .row -->
+			<div class="row">
+				<div class="col-md-12" id='output' ng-show='loaded'>
 					<!-- <img class="img-responsive" src="assets/img/ipad-hand.png" alt=""> -->
-						<h1>Ledger</h1>
-						<table>
+						<h1 class='centered'>Ledger</h1>
+						    <table ng-show='!loading' ng-table="tableParams" class="table">
+						        <tr ng-repeat="transaction in $data">
+						            <td data-title="'Hash'">
+						                {{transaction.Hash}}
+						            </td>
+						            <td data-title="'Date'">
+						            	{{transaction.Date}}
+						            </td>
+						            <td data-title="'Address'">
+						            	<!-- <p ng-repeat='addr in transaction.InputAddress' ng-click='user.AddressID= addr;lookupAddress(user.addressID)'></p> -->
+						            	<p class='limitText' ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="javascript:void(0)">{{addr}}</a></p>
+						            </td>
+
+						            <td data-title="'Amount'">
+						                <span ng-class="{ 'plus': transaction.Amount >= 0,'minus': transaction.Amount < 0 }">{{transaction['Amount']}}</span>
+						            </td>
+						            <td data-title="'Total Balance'" sortable="money">
+						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Total Balance']}}</span>
+						            </td>
+						        </tr>
+						    </table>
+						<!-- <table ng-table="tableParams">
 							<tr>
 								<th><span class='poppop' data-container="body" data-toggle="popover" data-placement="top" data-content="Since the ellipses are added with CSS the full string is part of the page.  That means CTRL+F works, and right click > copy will copy the full string past the ellipses.">Transaction Hash (?)</span</th>
 								<th><span class='poppop' data-container="body" data-toggle="popover" data-placement="top" data-content="Negative values indicate that Bitcoin is being sent.  Positive values mean it is being received.">(?)</span></th>
@@ -93,7 +115,7 @@
 								<td ng-if='transaction.Amount < 0'><p class='limitText' ng-repeat='addr in transaction.OutputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID)'><a href="javascript:void(0)">{{addr}}</a></p></td>
 								<td>{{transaction['Total Balance']}}</td>
 							</tr>
-						</table>
+						</table> -->
 				</div><!-- #output-->
 				<div id="errorLoad" ng-if='loadError'>
 					<h1>We're sorry, it seems the servers are down.</h1>

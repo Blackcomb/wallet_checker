@@ -1,22 +1,26 @@
-var lookupApp = angular.module('lookupApp', []);
+var lookupApp = angular.module('lookupApp', ['ngTable']);
 
 glob = '';
 
-lookupApp.controller('mainPageCtrl', function($scope, $http){
+lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = false;
+	$scope.loading = false; //loaded != loading.  loading is for spinners, etc.
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'}
 	var USD;
+	var transactions = [];
 
 	$scope.lookupAddress = function(address){		
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
+		$scope.loading = true;
 		$http.get(url).success(function(data){
+			$scope.loading = false;
 			$scope.loaded = true;
 			$scope.loadError = false;
 			glob = data;
+
 			//Take Blockchain.info's response of transactions and put it in a format we want.
 			//index 0 is the newest; index length - 1 is the first transaction.
-			var transactions = [];
 			for (i = data.txs.length -1; i > -1; i-- ){
 				var inputAddr = [];	
 				for (z = 0; z < data.txs[i]['inputs'].length; z++){
@@ -43,7 +47,23 @@ lookupApp.controller('mainPageCtrl', function($scope, $http){
 				'Total Received': data.addresses[0].total_received / 100000000,
 				'Total Sent': data.addresses[0].total_sent / 100000000,
 				'Transactions' : transactions
+
 			};
+
+			var data = transactions;
+			
+			$scope.tableParams = new ngTableParams({
+		        page: 1,            
+		        count: 5           // items per page
+		    }, {
+		        total: data.length, 
+		        getData: function($defer, params) {
+		            // use build-in angular filter
+		            var data = transactions;
+		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		        }
+		    });
 		}).
 		error(function(data){
 			$scope.loadError = true;
