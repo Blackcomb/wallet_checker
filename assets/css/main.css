@@ -197,8 +197,12 @@ tbody tr:nth-child(even) {
    background-color: #3cb1ff;
 }
 
-#output > table > tbody > tr:hover {
- background: #454CE1;   
+#output > table > tbody > tr:nth-child(odd):hover {
+ background: #2e85bf;   
+}
+
+#output > table > tbody > tr:nth-child(even):hover {
+ background: #2ca6f7;
 }
 
 .largeicon {

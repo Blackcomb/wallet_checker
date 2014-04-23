@@ -57,7 +57,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		        page: 1,            
 		        count: 5,           // items per page
 		        sorting: {
-		        	Amount: 'desc' 
+		        	Date: 'desc' 
 		        }
 		    }, {
 		        total: transactions.length, 
@@ -99,3 +99,9 @@ function timeConverter(UNIX_timestamp){
      var time = year+'-'+month+'-'+date+ ' '+hour+':'+min+':'+sec ;
      return time;
  }
+
+ function jump(h){
+    var url = location.href;
+    location.href = "#"+h;
+        history.replaceState(null,null,url)
+}
