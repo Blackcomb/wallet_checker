@@ -9,9 +9,11 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'}
 	var USD;
 	var transactions = [];
+	var data = [];
 
 	$scope.lookupAddress = function(address){		
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
+		// if ($scope.tableParams){$scope.reloadTable();}
 		$scope.loading = true;
 		$http.get(url).success(function(data){
 			$scope.loading = false;
@@ -47,28 +49,29 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 				'Total Received': data.addresses[0].total_received / 100000000,
 				'Total Sent': data.addresses[0].total_sent / 100000000,
 				'Transactions' : transactions
-
 			};
 
+
 			var data = transactions;
-			
-			$scope.tableParams = new ngTableParams({
-		        page: 1,            
-		        count: 5           // items per page
-		    }, {
-		        total: data.length, 
-		        getData: function($defer, params) {
-		            // use build-in angular filter
-		            var data = transactions;
-		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        }
-		    });
+			$scope.tableParams.reload(); //Enables new data to be loaded, e.g. on a new address.
 		}).
 		error(function(data){
 			$scope.loadError = true;
 		});
 	}
+
+	$scope.tableParams = new ngTableParams({
+        page: 1,            
+        count: 5           // items per page
+    }, {
+        total: data.length, 
+        getData: function($defer, params) {
+        	var data = transactions;
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        }
+    });
+
 	$scope.getUSD = function(){
 		var url = 'https://blockchain.info/ticker?cors=true'
 		$http.get(url).success(function(data){

@@ -167,9 +167,10 @@ i {
 }
 
 #output {
-    margin: 0px 0px 25px 25px;
+    margin: 0px 25px 25px 0px;
     color: white;
     padding-left: 0px;
+    padding-right: 0px;
 }
 
 .overview p {

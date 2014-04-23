@@ -72,10 +72,11 @@
 						<p>Balance (BTC): {{output.BTC}}</p>
 						<p>Total Received: {{output['Total Received']}}</p>
 						<p>Total Sent: {{output['Total Sent']}}</p>	
+						<button ng-click='reloadTable()'>reloadTable()</button>
 					</div>	
 			</div> <!-- .row -->
 			<div class="row">
-				<div class="col-md-12" id='output' ng-show='loaded'>
+				<div class="col-md-12" id='output'> <!-- ng-show='loaded' -->
 					<!-- <img class="img-responsive" src="assets/img/ipad-hand.png" alt=""> -->
 						<h1 class='centered'>Ledger</h1>
 						    <table ng-show='!loading' ng-table="tableParams" class="table">
