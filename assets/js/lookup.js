@@ -10,7 +10,7 @@ lookupApp.config(['$routeProvider',
 				templateUrl: 'ledger.html'
 			})
 			.when('/tx/:txID', {
-				controller: 'mainPageCtrl',
+				controller: 'txController',
 				templateUrl: 'transactions.html'
 			})
 			.otherwise({
@@ -109,16 +109,17 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 	};
 });
 
-lookupApp.controller('txController', function($scope){
-
+lookupApp.controller('txController', function($scope, $http, $routeParams){
+	$scope.lookupTx = function(txID){
+		var url = 'https://blockchain.info/rawtx/' + txID +'?cors=true';
+		$http.get(url).success(function(data){console.log("Tx Success!");console.log(data);});
+	}
+	$scope.lookupTx($routeParams.txID)
 });
 
 loadPopovers = function(){
 	console.log("Pop pop!");
-	$('.poppop').popover({trigger: 'hover', delay: { 
-       	show: "500", 
-       	hide: "100"
-    	}
+	$('.poppop').popover({trigger: 'hover'
 	});
 }
 //Thanks StackOverflow
