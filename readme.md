@@ -23,5 +23,8 @@ The site is to be presentable and polished by the 15th of May.  That includes:
 * Animations.  Need CSS animations for view transitions.
 * Redesign?
 * Work on the bottom section (info/contact us).
+* Add Google Analytics
+* Make the code production ready - minimize, etc.
+* Deploy.
 
 An ideal future feature is to allow the user to see graphs illustrating transactions (i.e. as clickable nodes on a chart, for more visual exploration).  Presumably d3.js will be used.
