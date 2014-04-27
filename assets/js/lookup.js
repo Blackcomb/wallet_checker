@@ -10,7 +10,7 @@ lookupApp.config(['$routeProvider',
 				templateUrl: 'ledger.html'
 			})
 			.when('/tx/:txID', {
-				controller: 'txController',
+				controller: 'mainPageCtrl',
 				templateUrl: 'transactions.html'
 			})
 			.otherwise({
@@ -20,9 +20,9 @@ lookupApp.config(['$routeProvider',
 
 lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
-	$scope.loaded = false;
+	$scope.loaded = true;
 	$scope.loading = false; //loaded != loading.  loading is for spinners, etc.
-	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'}
+	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'} //This is for debugging!  Remove this or equal to '' for prod.
 	var USD;
 	var transactions = [];
 	var data = [];
@@ -84,8 +84,10 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		        	var data = transactions;
 		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		            
 		        }
 		    });
+		    setTimeout(function(){loadPopovers()}, 10)
 		}).
 		error(function(data){
 			$scope.loadError = true;
@@ -99,18 +101,6 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 			$scope.output['USD'] = $scope.output['BTC']
 		});
 	}
-	//Called on an array (i.e. transactions), so you can search through items in the array by their property.
-	//This is namely for looking up Hashs.  This lets the transactions.html template verify that only matching transactions are shown.
-	$scope.findbyHash = function (source, id) {
-		console.log("Findbyhaaash");
-		console.log(source.filter(function( obj ) {
-	        return +obj.hash === +id;
-	    })[ 0 ]);
-	    return source.filter(function( obj ) {
-	        return +obj.hash === +id;
-	    })[ 0 ];
-	}
-
 	// This is basically just <a href='path'> in a JS fn.  Allows links to be bound to ng-click.
 	$scope.go = function ( path ) {
 	  $location.path( path );
@@ -123,10 +113,14 @@ lookupApp.controller('txController', function($scope){
 
 });
 
-window.onload = function(){
-	$('.poppop').popover({trigger: 'hover'});
-};
-
+loadPopovers = function(){
+	console.log("Pop pop!");
+	$('.poppop').popover({trigger: 'hover', delay: { 
+       	show: "500", 
+       	hide: "100"
+    	}
+	});
+}
 //Thanks StackOverflow
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp*1000); //Multiplied by 1000 because JS keeps time in miliseconds.  Unix time = seconds.

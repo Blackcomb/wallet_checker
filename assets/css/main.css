@@ -123,6 +123,7 @@ a:after {
 form {
     padding-bottom: 20px;
 }
+
 i {
 	margin: 8px;
 	color: #3498db; 
@@ -202,8 +203,12 @@ tbody tr:nth-child(even) {
 }
 
 .table-control {
-    color: black;
+    color: #2c3e50;
     font-size: 3rem;
+}
+
+td[data-title="'Details'"] {
+ text-align: center;   
 }
 
 #output > table > tbody > tr:nth-child(odd):hover {
