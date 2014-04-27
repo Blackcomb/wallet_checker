@@ -1,8 +1,24 @@
-var lookupApp = angular.module('lookupApp', ['ngTable']);
+var lookupApp = angular.module('lookupApp', ['ngRoute','ngTable', 'ngAnimate']);
 
 glob = '';
 
-lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter){
+lookupApp.config(['$routeProvider', 
+	function($routeProvider){
+		$routeProvider.
+			when('/', {
+				controller: 'mainPageCtrl',
+				templateUrl: 'ledger.html'
+			})
+			.when('/tx/:txID', {
+				controller: 'txController',
+				templateUrl: 'transactions.html'
+			})
+			.otherwise({
+				redirectTo: '/'
+			})
+	}])
+
+lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = false;
 	$scope.loading = false; //loaded != loading.  loading is for spinners, etc.
@@ -10,6 +26,8 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 	var USD;
 	var transactions = [];
 	var data = [];
+
+	$scope.routeParams = $routeParams;
 
 	$scope.lookupAddress = function(address){		
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
@@ -50,9 +68,10 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 				'Total Sent': data.addresses[0].total_sent / 100000000,
 				'Transactions' : transactions
 			};
-
-			if ($scope.tableParams){$scope.tableParams.reload();} //Enables new data to be loaded, e.g. on a new address.
-			var data = transactions;
+			//Enables new data to be loaded, e.g. on a new address.
+			//Pretty sure it's not working right now.
+			if ($scope.tableParams){$scope.tableParams.reload();} 
+			var data = transactions; //this data var is what is called by the tables.
 			$scope.tableParams = new ngTableParams({
 		        page: 1,            
 		        count: 5,           // items per page
@@ -80,6 +99,28 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 			$scope.output['USD'] = $scope.output['BTC']
 		});
 	}
+	//Called on an array (i.e. transactions), so you can search through items in the array by their property.
+	//This is namely for looking up Hashs.  This lets the transactions.html template verify that only matching transactions are shown.
+	$scope.findbyHash = function (source, id) {
+		console.log("Findbyhaaash");
+		console.log(source.filter(function( obj ) {
+	        return +obj.hash === +id;
+	    })[ 0 ]);
+	    return source.filter(function( obj ) {
+	        return +obj.hash === +id;
+	    })[ 0 ];
+	}
+
+	// This is basically just <a href='path'> in a JS fn.  Allows links to be bound to ng-click.
+	$scope.go = function ( path ) {
+	  $location.path( path );
+	  console.log(path);
+
+	};
+});
+
+lookupApp.controller('txController', function($scope){
+
 });
 
 window.onload = function(){
@@ -100,8 +141,13 @@ function timeConverter(UNIX_timestamp){
      return time;
  }
 
+ //HELPER FUNCTIONS
+
+//This manually scrolls to anchor tags.  For some reason the functionality was broken, I believe due to AngularJS routing.
  function jump(h){
     var url = location.href;
     location.href = "#"+h;
         history.replaceState(null,null,url)
 }
+
+
