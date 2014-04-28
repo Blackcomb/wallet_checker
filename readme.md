@@ -9,6 +9,7 @@ This site requires:
 * Bootstrap - css and js.
 * AngularJS
 * jQuery (AngularJS also depends on jQuery)
+* components.css - This is from an article from codrops that does the lookup button hover css ("Creative Buttons").  I've included it in the repository because it's tiny, but you'll likely not need it (the minimized code will be enough).
 
 Otherwise it runs on a basic LAMP setup. 
 
