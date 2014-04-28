@@ -1,0 +1,32 @@
+<div class="col-md-12" id='output' ng-show='loaded'> 
+						<h1 class='centered'>Ledger</h1>
+						    <table ng-show='!loading' ng-table="tableParams" class="table">
+						        <tr ng-repeat="transaction in $data">
+						        	<td data-title="'Details'">
+						        		<div class='icon-animation-container'>
+							        		<a href="#/tx/{{transaction.Hash}}"><i class="fa fa-info-circle table-control icon-spin"></i></a>
+							        	</div>
+						            </td>
+						            <td data-title="'Transaction Hash ID'" sortable="'Hash'">
+						               <p class='limitText'>{{transaction.Hash}}</p>
+						            </td>
+						            <td data-title="'Date'" sortable='"Date"'>
+						            	{{transaction.Date}}
+						            </td>
+						            <td data-title="'Address'" sortable='"InputAddress"'>
+						            	<p ng-repeat='addr in transaction.InputAddress'>{{addr}}</p>
+						            </td>
+
+						            <td data-title="'Amount'" sortable="'Amount'">
+						                <span ng-class="{ 'plus': transaction.Amount >= 0,'minus': transaction.Amount < 0 }">{{transaction['Amount']}}</span>
+						            </td>
+						            <td data-title="'Total Balance'" sortable="'Balance'">
+						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Balance']}}</span>
+						            </td>
+						        </tr>
+						    </table>
+				</div><!-- #output-->
+				<div id="errorLoad" ng-if='loadError'>
+					<h1>We're sorry, it seems the servers are down.</h1>
+					<p>There was a problem with your request, and unfortunately it couldn't be processed.  It's likely that the servers are down.  Check back soon because they should be back up soon.  Thank you for your patience.</p>
+				</div>

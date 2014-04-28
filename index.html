@@ -16,6 +16,7 @@
     <!-- Custom CSS & plugins -->
     <link href="assets/css/main.css" rel="stylesheet">
     <link href="assets/css/ng-table.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="assets/css/component.css" />
 
     <!-- Fonts from Google Fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
@@ -28,7 +29,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular-animate.js"></script>
 	<script src='assets/js/ng-table.js'></script>    
 
-	<!-- Site specific JavaScript -->
+	<!-- Site specific -->
     <script src='assets/js/emailhandler.js'></script>
     <script src="assets/js/lookup.js"></script>
     
@@ -62,58 +63,31 @@
     </div>
 
 	<div id="headerwrap">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7 col-md-offset-3">
-					<h1>Enter an address.</br>
-						Get results.</h1>
-					<form class="form-inline" role="form">
-					  <div class="form-group">
-					    <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
-					  </div>
-					  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn btn-warning	 btn-lg">Lookup</button>
-					</form>			
-				</div><!-- /col-md-6 -->
-			</div> <!-- .row -->
-			<div class='row overview'>
-				<div class='col-md-4'><p>Balance (BTC): {{output.BTC}}</p></div>
-				<div class='col-md-4'><p>Total Received: {{output['Total Received']}}</p></div>
-				<div class='col-md-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
-			</div>
-			<div class='animate'>
-				<div ng-view class="row">
-					<!-- The below is being transfered into an angularView in the leder.html file.  Left over here for now, tidy up once everything is working seemlessly.-->
-					<!-- <div class="col-md-12" id='output' ng-show='loaded'> 
-							<h1 class='centered'>Ledger</h1>
-							    <table ng-show='!loading' ng-table="tableParams" class="table" export-csv="csv">
-							        <tr ng-repeat="transaction in $data">
-							            <td data-title="'Hash'" sortable="'Hash'">
-							                <p class='limitText'>{{transaction.Hash}}</p>
-							            </td>
-							            <td data-title="'Date'" sortable='"Date"'>
-							            	{{transaction.Date}}
-							            </td>
-							            <td data-title="'Address'" sortable='"InputAddress"'>
-							            	<p ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="javascript:void(0)">{{addr}}</a></p>
-							            </td>
-
-							            <td data-title="'Amount'" sortable="'Amount'">
-							                <span ng-class="{ 'plus': transaction.Amount >= 0,'minus': transaction.Amount < 0 }">{{transaction['Amount']}}</span>
-							            </td>
-							            <td data-title="'Total Balance'" sortable="'Balance'">
-							                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Balance']}}</span>
-							            </td>
-							        </tr>
-							    </table>
-					</div>
-					<div id="errorLoad" ng-if='loadError'>
-						<h1>We're sorry, it seems the servers are down.</h1>
-						<p>There was a problem with your request, and unfortunately it couldn't be processed.  It's likely that the servers are down.  Check back soon because they should be back up soon.  Thank you for your patience.</p>
-					</div> -->
-					
-				</div><!-- /row -->
-			</div> <!-- .view-animate-container -->
-		</div><!-- /container -->
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7 col-md-offset-3">
+						<h1>Enter an address.</br>
+							Get results.</h1>
+						<form class="form-inline" role="form">
+						  <div class="form-group">
+						    <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
+						  </div>
+						  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn btn-1 btn-1c btn-lg">Lookup</button>
+						</form>			
+					</div><!-- /col-md-6 -->
+				</div> <!-- .row -->
+				<div class='row overview'>
+					<div class='col-md-4'><p>Balance (BTC): {{output.BTC}}</p></div>
+					<div class='col-md-4'><p>Total Received: {{output['Total Received']}}</p></div>
+					<div class='col-md-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
+				</div>
+				<div class='view-animate-container'>
+					<div ng-view class="row">
+					</div><!-- /row -->
+				</div> <!-- .view-animate-container -->
+			</div><!-- /container -->
+		</section>
 	</div><!-- /headerwrap -->
 	
 	

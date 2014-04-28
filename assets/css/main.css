@@ -133,7 +133,7 @@ i {
 
 /* HeaderWrap */
 #headerwrap {
-	 /*background: url(../img/bg01.jpg) no-repeat center top; */
+	 /*background: url(https://i.imgur.com/xBqFK5l.jpg) no-repeat center top; */
 	background-color: #3498db;
 	margin-top: -20px;
 	padding-top:75px;
@@ -151,6 +151,12 @@ i {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    position: relative;
+    z-index: 1;
+}
+
+#headerwrap > section > div > div:nth-child(1) > div > form > button {
+        margin-top: 1%;
 }
 
 #headerwrap h1 {
@@ -303,3 +309,17 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     left: -50px;
     height: 0px;
 }
+
+@media (min-width: 768px) { 
+    #headerwrap > section > div > div:nth-child(1) > div > form > button {
+        width: 399px;
+    }
+}
+
+@media (max-width: 768px) { 
+    #headerwrap > section > div > div:nth-child(1) > div > form > button {
+        width: 100%;
+    }
+ }
+
+

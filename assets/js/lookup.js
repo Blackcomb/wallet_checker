@@ -87,7 +87,6 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		            
 		        }
 		    });
-		    setTimeout(function(){loadPopovers()}, 10)
 		}).
 		error(function(data){
 			$scope.loadError = true;
@@ -102,26 +101,24 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		});
 	}
 	// This is basically just <a href='path'> in a JS fn.  Allows links to be bound to ng-click.
-	$scope.go = function ( path ) {
-	  $location.path( path );
-	  console.log(path);
-
+	$scope.go = function (path){
+	  $location.path(path);
 	};
 });
 
 lookupApp.controller('txController', function($scope, $http, $routeParams){
 	$scope.lookupTx = function(txID){
 		var url = 'https://blockchain.info/rawtx/' + txID +'?cors=true';
-		$http.get(url).success(function(data){console.log("Tx Success!");console.log(data);});
+		$http.get(url).success(function(data){
+			console.log("Tx Success!");
+			console.log(data);
+			$scope.txOutput = {
+
+			}
+		});
 	}
 	$scope.lookupTx($routeParams.txID)
 });
-
-loadPopovers = function(){
-	console.log("Pop pop!");
-	$('.poppop').popover({trigger: 'hover'
-	});
-}
 //Thanks StackOverflow
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp*1000); //Multiplied by 1000 because JS keeps time in miliseconds.  Unix time = seconds.

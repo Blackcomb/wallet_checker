@@ -28,3 +28,9 @@ The site is to be presentable and polished by the 15th of May.  That includes:
 * Deploy.
 
 An ideal future feature is to allow the user to see graphs illustrating transactions (i.e. as clickable nodes on a chart, for more visual exploration).  Presumably d3.js will be used.
+
+##Todo List
+This differs from the roadmap in that it's generally more short term and technical.
+
+* Fix 'Lookup' icon text going black after click.
+* Add a minor hover effect on info icons to show interactivity (quarter turn hover then stop?)
