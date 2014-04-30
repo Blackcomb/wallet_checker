@@ -14,7 +14,7 @@
 						            	{{transaction.Date}}
 						            </td>
 						            <td data-title="'Address'" sortable='"InputAddress"'>
-						            	<p ng-repeat='addr in transaction.InputAddress'>{{addr}}</p>
+						            	<p ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="#/">{{addr}}</a></p>
 						            </td>
 
 						            <td data-title="'Amount'" sortable="'Amount'">

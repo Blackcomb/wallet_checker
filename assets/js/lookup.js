@@ -17,7 +17,7 @@ lookupApp.config(['$routeProvider',
 				redirectTo: '/'
 			})
 	}])
-
+var data = [];
 lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = true;
@@ -25,14 +25,14 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'} //This is for debugging!  Remove this or equal to '' for prod.
 	var USD;
 	var transactions = [];
-	var data = [];
+	// var data = [];
 
 	$scope.routeParams = $routeParams;
 
 	$scope.lookupAddress = function(address){		
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
-		// if ($scope.tableParams){$scope.reloadTable();}
 		$scope.loading = true;
+		$scope.clearTableData();
 		$http.get(url).success(function(data){
 			$scope.loading = false;
 			$scope.loaded = true;
@@ -50,7 +50,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 				for (z = 0; z < data.txs[i]['out'].length; z++){
 					outputAddr.push(data.txs[i]['out'][z]['addr'])
 				}
-
+				//This is what is displayed in the leder/tables.
 				transactions[i] = {
 					'Hash' : data.txs[i]['hash'],
 					'Amount' : data.txs[i]['result'] / 100000000,
@@ -61,6 +61,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 				};
 			};
 
+			//Output is for general data, not for the tabular data.
 			$scope.output = {
 				'BTC' : data.wallet.final_balance / 100000000, //Response in satoshi, so have to divide.
 				'Address' : address,
@@ -70,8 +71,10 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 			};
 			//Enables new data to be loaded, e.g. on a new address.
 			//Pretty sure it's not working right now.
-			if ($scope.tableParams){$scope.tableParams.reload();} 
-			var data = transactions; //this data var is what is called by the tables.
+			if ($scope.tableParams){
+				$scope.tableParams.reload();
+			} 
+			data = transactions; //this data var is what is called by the tables. Unsure if can remove.
 			$scope.tableParams = new ngTableParams({
 		        page: 1,            
 		        count: 5,           // items per page
@@ -81,11 +84,12 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		    }, {
 		        total: transactions.length, 
 		        getData: function($defer, params) {
-		        	var data = transactions;
+		        	data = transactions;
 		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		            
-		        }
+		        },
+		        $scope: { $data: {} }
 		    });
 		}).
 		error(function(data){
@@ -104,6 +108,16 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 	$scope.go = function (path){
 	  $location.path(path);
 	};
+
+	//After every address lookup the previous data isn't wiped.  This function fixes that problem.
+	$scope.clearTableData = function(){
+		transactions = [];
+		$scope.output = {}
+		if ($scope.tableParams){
+				$scope.tableParams.reload();
+		} 
+	}
+	
 });
 
 lookupApp.controller('txController', function($scope, $http, $routeParams){
