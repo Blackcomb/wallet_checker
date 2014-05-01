@@ -17,15 +17,16 @@ lookupApp.config(['$routeProvider',
 				redirectTo: '/'
 			})
 	}])
+
 var data = [];
-lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams){
+lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams, BlockchainService, $q){
+	//This controller is for ADDRESS lookup, not transactions.
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = true;
 	$scope.loading = false; //loaded != loading.  loading is for spinners, etc.
-	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'} //This is for debugging!  Remove this or equal to '' for prod.
+	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'} //This is for debugging! Set the property to '' for prod.
 	var USD;
 	var transactions = [];
-	// var data = [];
 
 	$scope.routeParams = $routeParams;
 
@@ -97,6 +98,33 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		});
 	}
 
+	$scope.callBlockchain = function(address) {
+		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
+		var promise = BlockchainService.lookupAddress(url);
+		/*
+		The below code is partially working.
+
+		*/
+		promise.then(function(data){
+			console.log(data);
+			$scope.tableParams = new ngTableParams({
+		        page: 1,            
+		        count: 5,           // items per page
+		        sorting: {
+		        	Date: 'desc' 
+		        }
+		    }, {
+		        total: data.length, 
+		        getData: function($defer, params) {
+		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		            
+		        },
+		        $scope: { $data: {} }
+		    })
+	    });
+	}
+
 	$scope.getUSD = function(){
 		var url = 'https://blockchain.info/ticker?cors=true'
 		$http.get(url).success(function(data){
@@ -121,6 +149,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 });
 
 lookupApp.controller('txController', function($scope, $http, $routeParams){
+	//TODO: refactor so that it uses BlockchainService.
 	$scope.lookupTx = function(txID){
 		var url = 'https://blockchain.info/rawtx/' + txID +'?cors=true';
 		$http.get(url).success(function(data){
@@ -133,6 +162,56 @@ lookupApp.controller('txController', function($scope, $http, $routeParams){
 	}
 	$scope.lookupTx($routeParams.txID)
 });
+
+lookupApp.service('BlockchainService', ['$http', '$q', function($http, $q){
+	this.lookupAddress = function(url) {
+	//Lookup Address is to be called for addresses only.  TODO: Another method for transactions and txController.
+	//Currently I'm refactoring so the function returns a promise.
+	var transactions = [];
+	var deferred = $q.defer();
+		return $http.get(url).then(function(data){
+			data = data.data; //original data var also includes header response.
+			for (i = data.txs.length -1; i > -1; i-- ){
+				var inputAddr = [];	
+				for (z = 0; z < data.txs[i]['inputs'].length; z++){
+					inputAddr.push(data.txs[i]['inputs'][z]['prev_out']['addr'])
+				}
+				var outputAddr = [];
+				for (z = 0; z < data.txs[i]['out'].length; z++){
+					outputAddr.push(data.txs[i]['out'][z]['addr'])
+				}
+				//This is what is displayed in the leder/tables.
+				transactions[i] = {
+					'Hash' : data.txs[i]['hash'],
+					'Amount' : data.txs[i]['result'] / 100000000,
+					'Balance' : data.txs[i]['balance'] / 100000000,
+					'InputAddress' : inputAddr,
+					'OutputAddress' : outputAddr,
+					'Date' : timeConverter(data.txs[i]['time'])
+				};
+			};
+
+
+			deferred.resolve(transactions);
+			return deferred.promise;
+
+			//Output is for general data, not for the tabular data.
+			//TODO: Implement a way to pass this info back to the controller without making a second HTTP request.
+			//Probably wrap the output in an array/obj, one is the below info, the other is the array of transactions.
+			// $scope.output = {
+			// 	'BTC' : data.wallet.final_balance / 100000000, //Response in satoshi, so have to divide.
+			// 	'Address' : address,
+			// 	'Total Received': data.addresses[0].total_received / 100000000,
+			// 	'Total Sent': data.addresses[0].total_sent / 100000000,
+			// 	'Transactions' : transactions
+			// };
+			
+		}, function(error){
+			console.log(error);
+		});
+	}
+}]);
+
 //Thanks StackOverflow
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp*1000); //Multiplied by 1000 because JS keeps time in miliseconds.  Unix time = seconds.

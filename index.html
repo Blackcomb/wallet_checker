@@ -74,7 +74,7 @@
 						    <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
 						  </div>
 						  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn-effect btn-1 btn-1c btn-lg">Lookup</button>
-						  <button ng-click='clearTableData()'>clearTableData()</button>
+						  <button ng-click='callBlockchain(user.addressID)'>callBlockchain()</button>
 						</form>			
 					</div><!-- /col-md-6 -->
 				</div> <!-- .row -->
