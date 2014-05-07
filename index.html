@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app='lookupApp'>
-  <head>
+    <head lang="en">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,22 +14,25 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS & plugins -->
+    <link href="assets/css/ng-grid.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/component.css" />
     <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/ng-table.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="assets/css/component.css" />
 
-    <!-- Fonts from Google Fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+    <!-- Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 
-	<!-- JavaScript libraries/frameworks -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <!-- JavaScript libraries/frameworks -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular.min.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.6/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.6/angular-resource.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular-animate.js"></script>
-	<script src='assets/js/ng-table.js'></script>    
-
-	<!-- Site specific -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.3/angular-animate.js"></script>
+    <!--<script src='assets/js/ng-grid-2.0.11.min.js'></script>-->
+    <script src='assets/js/ng-grid-2.0.11.debug.js'></script>
+    <script src='assets/js/ng-grid-flexible-height.js'></script>
+    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
+    
+    <!-- Site specific -->
     <script src='assets/js/emailhandler.js'></script>
     <script src="assets/js/lookup.js"></script>
     
@@ -39,11 +42,9 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-  </head>
-
-  <body ng-controller='mainPageCtrl'>
-
-    <!-- Fixed navbar -->
+    </head>
+    <body ng-controller="mainPageCtrl">
+        <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -62,104 +63,116 @@
       </div>
     </div>
 
-	<div id="headerwrap">
-		<section>
-			<div class="container">
-				<div class="row">
-					<div class="col-md-7 col-md-offset-3">
-						<h1>Enter an address.</br>
-							Get results.</h1>
-						<form class="form-inline" role="form">
-						  <div class="form-group">
-						    <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
-						  </div>
-						  <button type="submit" ng-click='lookupAddress(user.addressID)' class="btn-effect btn-1 btn-1c btn-lg">Lookup</button>
-						  <button ng-click='callBlockchain(user.addressID)'>callBlockchain()</button>
-						</form>			
-					</div><!-- /col-md-6 -->
-				</div> <!-- .row -->
-				<div class='row overview'>
-					<div class='col-md-4'><p>Balance (BTC): {{output.BTC}}</p></div>
-					<div class='col-md-4'><p>Total Received: {{output['Total Received']}}</p></div>
-					<div class='col-md-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
-				</div>
-				<div class='view-animate-container'>
-					<div ng-view class="row">
-					</div><!-- /row -->
-				</div> <!-- .view-animate-container -->
-			</div><!-- /container -->
-		</section>
-	</div><!-- /headerwrap -->
-	
-	
-	<div id="info" class="container">
-		<div class="row mt centered">
-			<div class="col-lg-6 col-lg-offset-3">
-				<h1>WELCOME</h1>
-				<h3>Wanna see the balance and transaction history of a bitcoin address?  Well, lucky you.  You're in the right place.</h3>
+    <div id="headerwrap">
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 col-md-offset-3">
+                        <h1>Enter an address.</br>
+                            Get results.</h1>
+                        <form class="form-inline" role="form">
+                          <div class="form-group">
+                            <span class='loadingSpinner' ng-show='loading'><i class="fa fa-spinner fa-spin fa-3x centered"></i></span><input ng-model="user.addressID" class="form-control" size="40" placeholder="e.g. 1LDxWVyq3JU1vfeNZzMYFzBGAvFaZqXBBc">
+                          </div>
+                          <button type="submit" ng-click='callBlockchain(user.addressID)' class="btn-effect btn-1 btn-1c btn-lg">Lookup</button>
+                        </form>         
+                    </div><!-- /col-md-6 -->
+                </div> <!-- .row -->
+                <div class='row overview'>
+                    <div class='col-md-4'><p>Balance (BTC): {{output.BTC}}</p></div>
+                    <div class='col-md-4'><p>Total Received: {{output['Total Received']}}</p></div>
+                    <div class='col-md-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
+                </div>
+                <div class="gridStyle" ng-grid="gridOptions"></div>
+                <div class="selectedItems">
+                    <div class='row'>
+                        <div class="col-md-6">
+                            <h2>Input</h2>
+                            <ul>
+                                <li class='fa fa-chevron-circle-right' ng-repeat='addr in mySelections[0].InputAddress' ng-click='user.addressID = addr;callBlockchain(user.addressID);'><a href="#/">{{addr}}</a></li>
+                            </ul>
+                        </div>
+                        <div class='col-md-6'>
+                            <h2>Output</h2>
+                            <ul>
+                                <li class='fa fa-chevron-circle-right' ng-repeat='addr in mySelections[0].OutputAddress' ng-click='user.addressID = addr;callBlockchain(user.addressID);'><a href="#/">{{addr}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
-			</div>
-		</div><!-- /row -->
-		
-		<div class="row mt centered">
-			<h4>HOW TO USE THIS SITE</h4>
-			<div class="col-lg-4">
-				<!-- <img src="assets/img/ser01.png" width="180" alt=""> -->
-				<i class="fa fa-btc largeicon"></i>
-				<h4>ENTER AN ADDRESS</h4>
-				<p>Simply enter an address then watch as the Ledger is populated with just the information you need from the Blockchain. We have a quick address overview underneath the search bar, and we get into the transaction details in the Ledger.</p>
-			</div><!--/col-lg-4 -->
+                </div>
+            </div><!-- /container -->
+        </section>
+    </div><!-- /headerwrap -->
+    <div id="info" class="container">
+        <div class="row mt centered">
+            <div class="col-lg-6 col-lg-offset-3">
+                <h1>WELCOME</h1>
+                <h3>Wanna see the balance and transaction history of a bitcoin address?  Well, lucky you.  You're in the right place.</h3>
 
-			<div class="col-lg-4">
-				<!-- <img src="assets/img/ser02.png" width="180" alt=""> -->
-				<i class="fa fa-globe largeicon"></i>
-				<h4>START EXPLORING</h4>
-				<p>Any time you see an address in the Ledger you can click it to run a search on that address. Clicking the transaction hash ID will take you to the Blockchain.info page on the given transaction.</p>
+            </div>
+        </div><!-- /row -->
+        
+        <div class="row mt centered">
+            <h4>HOW TO USE THIS SITE</h4>
+            <div class="col-lg-4">
+                <!-- <img src="assets/img/ser01.png" width="180" alt=""> -->
+                <i class="fa fa-btc largeicon"></i>
+                <h4>ENTER AN ADDRESS</h4>
+                <p>Simply enter an address then watch as the Ledger is populated with just the information you need from the Blockchain. We have a quick address overview underneath the search bar, and we get into the transaction details in the Ledger.</p>
+            </div><!--/col-lg-4 -->
 
-			</div><!--/col-lg-4 -->
+            <div class="col-lg-4">
+                <!-- <img src="assets/img/ser02.png" width="180" alt=""> -->
+                <i class="fa fa-globe largeicon"></i>
+                <h4>START EXPLORING</h4>
+                <p>Any time you see an address in the Ledger you can click it to run a search on that address. Clicking the transaction hash ID will take you to the Blockchain.info page on the given transaction.</p>
 
-			<div class="col-lg-4">
-				<!-- <img src="assets/img/ser03.png" width="180" alt=""> -->
-				<i class="fa fa-exclamation-triangle largeicon"></i>
-				<h4>CAVEATS</h4>
-				<p>While this site accurately shows you how many BTC are in a given address, it's not an accurate representation of a wallet, or person's, total.</p>
+            </div><!--/col-lg-4 -->
 
-			</div><!--/col-lg-4 -->
-		</div><!-- /row -->
-		<div class="row">
-			<div class='col-md-5'>
-				<h3>Contact Us</h3>
-				<p>We want to be part of a new Bitcoin conversation, and we can't do that without you.   If you have something to say, let us know.</p>
-				<p>Our email is contact@whatever.com.  Or you can email us at SatoshiApps, at satoshi@satoshi.satoshi</p>
-			</div>
-			<div class="col-md-6 col-md-offset-1">
-		      <form id="form" role="form">
-		        <div class="form-group">
-		          <label for="name">Name</label>
-		          <input type="text" class="form-control" name="name" placeholder="Name" />
-		        </div>
-		        <div class="form-group">
-		          <label for="email">Email address</label>
-		          <input type="email" class="form-control" name="email" placeholder="Enter email" />
-		        </div>
-		        <div class="form-group">
-		          <label for="message">Message</label>
-		          <textarea name='message' class='form-control' rows='4' placeholder='Enter your message'></textarea>
-		        </div>
-		        <button type="submit" class="btn btn-default">Submit</button>
-		      </form>
-		      <div id="formresponse" style="display:none;"></div>
-		    </div>
-		</div> <!-- /row -->
+            <div class="col-lg-4">
+                <!-- <img src="assets/img/ser03.png" width="180" alt=""> -->
+                <i class="fa fa-exclamation-triangle largeicon"></i>
+                <h4>CAVEATS</h4>
+                <p>While this site accurately shows you how many BTC are in a given address, it's not an accurate representation of a wallet, or person's, total.</p>
+
+            </div><!--/col-lg-4 -->
+        </div><!-- /row -->
+        <div class="row">
+            <div class='col-md-5'>
+                <h3>Contact Us</h3>
+                <p>We want to be part of a new Bitcoin conversation, and we can't do that without you.   If you have something to say, let us know.</p>
+                <p>Our email is contact@whatever.com.  Or you can email us at SatoshiApps, at satoshi@satoshi.satoshi</p>
+            </div>
+            <div class="col-md-6 col-md-offset-1">
+              <form id="form" role="form">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" name="name" placeholder="Name" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input type="email" class="form-control" name="email" placeholder="Enter email" />
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <textarea name='message' class='form-control' rows='4' placeholder='Enter your message'></textarea>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+              <div id="formresponse" style="display:none;"></div>
+            </div>
+        </div> <!-- /row -->
 
 
-	</div><!-- /container -->
-	<footer>&copy SatoshiApps.  All Rights Reserved.</footer>
+    </div><!-- /container -->
+    <footer>&copy SatoshiApps.  All Rights Reserved.</footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-  </body>
+
+    </body>
 </html>

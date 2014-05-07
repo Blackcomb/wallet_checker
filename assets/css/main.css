@@ -137,6 +137,7 @@ i {
 	background-color: #3498db;
 	margin-top: -20px;
 	padding-top:75px;
+    padding-bottom: 75px;   
 	background-attachment: relative;
 	background-position: center center;
 	min-height: 650px;
@@ -170,6 +171,8 @@ i {
 
 #headerwrap h2 {
     color: white;
+    text-align: center;
+    border-bottom: 1px white solid;
 }
 
 .hash div, .hash div a {
@@ -322,4 +325,50 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     }
  }
 
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 100%;
+}
 
+.ngGrid {
+min-height: 100px;
+}
+
+.selectedItems {
+ color: white;   
+ padding-top: 50px;
+ text-align: left;
+}
+
+
+
+.selectedItems li a {
+    color: white;
+    padding-left: 5%;
+    word-wrap: normal;
+}
+
+
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+#headerwap:after {
+    content: '';
+    background: url(/img/mountains.png) no-repeat center -40px;
+    opacity: 0.1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+}
+
+#info:after{
+    background: url(/img/mountains.png) no-repeat center -40px;
+}

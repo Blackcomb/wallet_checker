@@ -1,4 +1,4 @@
-var lookupApp = angular.module('lookupApp', ['ngRoute','ngTable', 'ngAnimate']);
+var lookupApp = angular.module('lookupApp', ['ngRoute', 'ngAnimate', 'ngGrid']);
 
 glob = '';
 
@@ -19,110 +19,37 @@ lookupApp.config(['$routeProvider',
 	}])
 
 var data = [];
-lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $filter, $location, $routeParams, BlockchainService, $q){
-	//This controller is for ADDRESS lookup, not transactions.
+lookupApp.controller('mainPageCtrl', function($scope, $http, $filter, $location, $routeParams, BlockchainService, $q){
 	$scope.Math = window.Math; //So absolute value can be called within bindings.
 	$scope.loaded = true;
 	$scope.loading = false; //loaded != loading.  loading is for spinners, etc.
 	$scope.user = {addressID : '1gRPd4uauVLjHEFzyKohQaX9VK96awLFP'} //This is for debugging! Set the property to '' for prod.
 	var USD;
-	var transactions = [];
+	$scope.transactions = [];
+	$scope.myData = [];
 
-	$scope.routeParams = $routeParams;
-
-	$scope.lookupAddress = function(address){		
-		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
-		$scope.loading = true;
-		$scope.clearTableData();
-		$http.get(url).success(function(data){
-			$scope.loading = false;
-			$scope.loaded = true;
-			$scope.loadError = false;
-			glob = data;
-
-			//Take Blockchain.info's response of transactions and put it in a format we want.
-			//index 0 is the newest; index length - 1 is the first transaction.
-			for (i = data.txs.length -1; i > -1; i-- ){
-				var inputAddr = [];	
-				for (z = 0; z < data.txs[i]['inputs'].length; z++){
-					inputAddr.push(data.txs[i]['inputs'][z]['prev_out']['addr'])
-				}
-				var outputAddr = [];
-				for (z = 0; z < data.txs[i]['out'].length; z++){
-					outputAddr.push(data.txs[i]['out'][z]['addr'])
-				}
-				//This is what is displayed in the leder/tables.
-				transactions[i] = {
-					'Hash' : data.txs[i]['hash'],
-					'Amount' : data.txs[i]['result'] / 100000000,
-					'Balance' : data.txs[i]['balance'] / 100000000,
-					'InputAddress' : inputAddr,
-					'OutputAddress' : outputAddr,
-					'Date' : timeConverter(data.txs[i]['time'])
-				};
-			};
-
-			//Output is for general data, not for the tabular data.
-			$scope.output = {
-				'BTC' : data.wallet.final_balance / 100000000, //Response in satoshi, so have to divide.
-				'Address' : address,
-				'Total Received': data.addresses[0].total_received / 100000000,
-				'Total Sent': data.addresses[0].total_sent / 100000000,
-				'Transactions' : transactions
-			};
-			//Enables new data to be loaded, e.g. on a new address.
-			//Pretty sure it's not working right now.
-			if ($scope.tableParams){
-				$scope.tableParams.reload();
-			} 
-			data = transactions; //this data var is what is called by the tables. Unsure if can remove.
-			$scope.tableParams = new ngTableParams({
-		        page: 1,            
-		        count: 5,           // items per page
-		        sorting: {
-		        	Date: 'desc' 
-		        }
-		    }, {
-		        total: transactions.length, 
-		        getData: function($defer, params) {
-		        	data = transactions;
-		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		            
-		        },
-		        $scope: { $data: {} }
-		    });
-		}).
-		error(function(data){
-			$scope.loadError = true;
-		});
-	}
+	// Deprecated code.  Removing soon. 
+	// $scope.lookupAddress = function (address) {
+	//   var url = 'https://blockchain.info/multiaddr?cors=true&active=' + address;
+	//   $http.get(url).success(function (data) {
+	//     $scope.transactions = data;
+	//     $scope.columnsSelected = [{field: 'name', displayName: 'Updated'}, {field:'age', displayName:'updaterrr'}];
+	    
+	//   });
+	// };
 
 	$scope.callBlockchain = function(address) {
 		var url = 'https://blockchain.info/multiaddr?cors=true&active='+address;
 		var promise = BlockchainService.lookupAddress(url);
-		/*
-		The below code is partially working.
-
-		*/
 		promise.then(function(data){
-			console.log(data);
-			$scope.tableParams = new ngTableParams({
-		        page: 1,            
-		        count: 5,           // items per page
-		        sorting: {
-		        	Date: 'desc' 
-		        }
-		    }, {
-		        total: data.length, 
-		        getData: function($defer, params) {
-		            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		            
-		        },
-		        $scope: { $data: {} }
-		    })
-	    });
+			$scope.myData = data;
+			$scope.columnsSelected = [{field:'Date', displayName:'Date'},
+									{field: 'Hash', displayName: 'Hash'}, 
+									{field:'Amount', displayName:'Amount', cellTemplate: '<div ng-class="{green: row.getProperty(col.field) > 0, red: row.getProperty(col.field) < 0, }"><div class="ngCellText">{{row.getProperty(col.field)}}</div></div>'},
+									{field:'Balance', displayName:'Balance'}
+									];
+
+		})
 	}
 
 	$scope.getUSD = function(){
@@ -133,19 +60,25 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, ngTableParams, $fil
 		});
 	}
 	// This is basically just <a href='path'> in a JS fn.  Allows links to be bound to ng-click.
+	//Anchor tags weren't working before, I think it's related to Angular URL routing.
 	$scope.go = function (path){
 	  $location.path(path);
 	};
 
-	//After every address lookup the previous data isn't wiped.  This function fixes that problem.
 	$scope.clearTableData = function(){
-		transactions = [];
-		$scope.output = {}
-		if ($scope.tableParams){
-				$scope.tableParams.reload();
-		} 
-	}
-	
+		$scope.myData = [];
+	};
+	$scope.mySelections = [];
+    $scope.columnsSelected = [{field: 'Info', displayName: 'Info'}]; // Columns are properly set in callBlockchain().
+    $scope.myData = [{Info: "To get started use the 'Lookup' button above.  You can click on rows to get more details."}];  
+    $scope.gridOptions = { 
+        data: 'myData',
+        selectedItems: $scope.mySelections,
+        multiSelect: false,
+        plugins: [new ngGridFlexibleHeightPlugin()],
+        enablePinning: true,
+        columnDefs: 'columnsSelected'
+    };
 });
 
 lookupApp.controller('txController', function($scope, $http, $routeParams){

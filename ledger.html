@@ -1,6 +1,7 @@
 <div class="col-md-12" id='output' ng-show='loaded'> 
 						<h1 class='centered'>Ledger</h1>
-						    <table ng-show='!loading' ng-table="tableParams" class="table">
+						<div class="gridStyle" ng-grid="gridOptions"></div>
+<!-- 						    <table ng-show='!loading' ng-table="tableParams" class="table">
 						        <tr ng-repeat="transaction in $data">
 						        	<td data-title="'Details'">
 						        		<div class='icon-animation-container'>
@@ -24,7 +25,7 @@
 						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Balance']}}</span>
 						            </td>
 						        </tr>
-						    </table>
+						    </table> -->
 				</div><!-- #output-->
 				<div id="errorLoad" ng-if='loadError'>
 					<h1>We're sorry, it seems the servers are down.</h1>
