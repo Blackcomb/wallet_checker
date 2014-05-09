@@ -1,31 +1,6 @@
-<div class="col-md-12" id='output' ng-show='loaded'> 
-						<h1 class='centered'>Ledger</h1>
-						<div class="gridStyle" ng-grid="gridOptions"></div>
-<!-- 						    <table ng-show='!loading' ng-table="tableParams" class="table">
-						        <tr ng-repeat="transaction in $data">
-						        	<td data-title="'Details'">
-						        		<div class='icon-animation-container'>
-							        		<a href="#/tx/{{transaction.Hash}}"><i class="fa fa-info-circle table-control icon-spin"></i></a>
-							        	</div>
-						            </td>
-						            <td data-title="'Transaction Hash ID'" sortable="'Hash'">
-						               <p class='limitText'>{{transaction.Hash}}</p>
-						            </td>
-						            <td data-title="'Date'" sortable='"Date"'>
-						            	{{transaction.Date}}
-						            </td>
-						            <td data-title="'Address'" sortable='"InputAddress"'>
-						            	<p ng-repeat='addr in transaction.InputAddress' ng-click='user.addressID = addr;lookupAddress(user.addressID);'><a href="#/">{{addr}}</a></p>
-						            </td>
-
-						            <td data-title="'Amount'" sortable="'Amount'">
-						                <span ng-class="{ 'plus': transaction.Amount >= 0,'minus': transaction.Amount < 0 }">{{transaction['Amount']}}</span>
-						            </td>
-						            <td data-title="'Total Balance'" sortable="'Balance'">
-						                <span ng-class="{ 'plus': user.money >= 0,'minus': user.money < 0 }">{{transaction['Balance']}}</span>
-						            </td>
-						        </tr>
-						    </table> -->
+<div class="col-md-12" id='output'> 
+						<h1 class='centered'>Ledger{{$parent.gridOptions}}</h1>
+						<div class="gridStyle" ng-grid="$parent.gridOptions"></div>
 				</div><!-- #output-->
 				<div id="errorLoad" ng-if='loadError'>
 					<h1>We're sorry, it seems the servers are down.</h1>

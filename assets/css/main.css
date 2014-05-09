@@ -330,9 +330,6 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     width: 100%;
 }
 
-.ngGrid {
-min-height: 100px;
-}
 
 .selectedItems {
  color: white;   
@@ -344,11 +341,14 @@ min-height: 100px;
 
 .selectedItems li a {
     color: white;
-    padding-left: 5%;
+    padding-left: 2%;
     word-wrap: normal;
 }
 
-
+.selectedItems a:hover {
+ opacity: 0.8;
+ transition: 0.2s;
+}
 
 .green {
     color: green;
@@ -357,18 +357,41 @@ min-height: 100px;
 .red {
     color: red;
 }
-
-#headerwap:after {
-    content: '';
-    background: url(/img/mountains.png) no-repeat center -40px;
-    opacity: 0.1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    position: absolute;
+.ngTopPanel {
+    background-color: #D8E0E7;
 }
 
-#info:after{
-    background: url(/img/mountains.png) no-repeat center -40px;
+.ngRow.odd {
+    background-color: #fdfdfd;
 }
+
+.ngRow.even {
+    background-color: #f3f3f3;
+}
+
+.ngRow.selected {
+    background-color: #58AEE5;
+    color: white
+}
+
+.selected .green, .selected .red {
+    color: white
+}
+
+
+.nav-tabs li {
+ margin-left: 20px;
+}
+
+.nav-tabs li a {
+ color: white;   
+}
+
+.nav-tabs li.active a {
+ color: black;   
+}
+
+.nav-tabs li a:hover {
+ color: black;   
+}
+

@@ -15,6 +15,7 @@
 
     <!-- Custom CSS & plugins -->
     <link href="assets/css/ng-grid.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/component.css" />
     <link href="assets/css/main.css" rel="stylesheet">
 
@@ -30,7 +31,8 @@
     <!--<script src='assets/js/ng-grid-2.0.11.min.js'></script>-->
     <script src='assets/js/ng-grid-2.0.11.debug.js'></script>
     <script src='assets/js/ng-grid-flexible-height.js'></script>
-    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
+    <script src='assets/js/angularSlideables.js'></script>
+    
     
     <!-- Site specific -->
     <script src='assets/js/emailhandler.js'></script>
@@ -78,22 +80,33 @@
                         </form>         
                     </div><!-- /col-md-6 -->
                 </div> <!-- .row -->
-                <div class='row overview'>
-                    <div class='col-md-4'><p>Balance (BTC): {{output.BTC}}</p></div>
-                    <div class='col-md-4'><p>Total Received: {{output['Total Received']}}</p></div>
-                    <div class='col-md-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
+                <div class='tabs'>
+                    <ul class="nav nav-tabs">
+                      <li ng-class="{active: visibleTab == 0}"><a href="#" ng-click="changeTab(0);">Ledger</a></li>
+                      <li ng-class="{active: visibleTab == 1}"><a href="#" ng-click="changeTab(1);">Address Summary</a></li>
+                      <li ng-class="{active: visibleTab == 2}"><a href="#" ng-click="changeTab(2);">Transaction Details</a></li>
+                    </ul>
                 </div>
-                <div class="gridStyle" ng-grid="gridOptions"></div>
-                <div class="selectedItems">
+
+                <div id="view">
+                    <div class="gridStyle" ng-grid="gridOptions" ng-show="visibleTab == 0"></div>
+                    <div class='overview' ng-show='visibleTab == 1'>
+                        <div class='col-sm-4'><p>Balance (BTC): {{output.BTC}}</p></div>
+                        <div class='col-sm-4'><p>Total Received: {{output['Total Received']}}</p></div>
+                        <div class='col-sm-4'><p>Total Sent: {{output['Total Sent']}}</p></div>
+                    </div>
+                    <div class='txDetails' ng-show="visibleTab == 2"></div>
+                </div>
+                <div id="txInfo" class="selectedItems" ng-show="mySelections[0]" ng-animate='box'>
                     <div class='row'>
                         <div class="col-md-6">
-                            <h2>Input</h2>
+                            <h2>Input<span class="poppop" data-container="body" data-toggle="popover" data-placement="top" data-content="Click any of the addresses below to run a lookup on them.">(?)</span></h2>
                             <ul>
                                 <li class='fa fa-chevron-circle-right' ng-repeat='addr in mySelections[0].InputAddress' ng-click='user.addressID = addr;callBlockchain(user.addressID);'><a href="#/">{{addr}}</a></li>
                             </ul>
                         </div>
                         <div class='col-md-6'>
-                            <h2>Output</h2>
+                            <h2>Output <span class="poppop" data-container="body" data-toggle="popover" data-placement="top" data-content="Click any of the addresses below to run a lookup on them.">(?)</span></h2>
                             <ul>
                                 <li class='fa fa-chevron-circle-right' ng-repeat='addr in mySelections[0].OutputAddress' ng-click='user.addressID = addr;callBlockchain(user.addressID);'><a href="#/">{{addr}}</a></li>
                             </ul>
@@ -115,14 +128,14 @@
         
         <div class="row mt centered">
             <h4>HOW TO USE THIS SITE</h4>
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <!-- <img src="assets/img/ser01.png" width="180" alt=""> -->
                 <i class="fa fa-btc largeicon"></i>
                 <h4>ENTER AN ADDRESS</h4>
                 <p>Simply enter an address then watch as the Ledger is populated with just the information you need from the Blockchain. We have a quick address overview underneath the search bar, and we get into the transaction details in the Ledger.</p>
             </div><!--/col-lg-4 -->
 
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <!-- <img src="assets/img/ser02.png" width="180" alt=""> -->
                 <i class="fa fa-globe largeicon"></i>
                 <h4>START EXPLORING</h4>
@@ -130,7 +143,7 @@
 
             </div><!--/col-lg-4 -->
 
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <!-- <img src="assets/img/ser03.png" width="180" alt=""> -->
                 <i class="fa fa-exclamation-triangle largeicon"></i>
                 <h4>CAVEATS</h4>
@@ -172,7 +185,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script onload="$('.poppop').popover({trigger: 'hover'})" src="assets/js/bootstrap.min.js"></script>
 
     </body>
 </html>
