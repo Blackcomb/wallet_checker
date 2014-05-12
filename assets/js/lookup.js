@@ -63,7 +63,7 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, $filter, $location,
 		var url = 'https://blockchain.info/ticker?cors=true'
 		$http.get(url).success(function(data){
 			USD = data.USD;
-			$scope.output['USD'] = $scope.output['BTC']
+			// $scope.output['USD'] = $scope.output['BTC']
 		});
 	}
 	// This is basically just <a href='path'> in a JS fn.  Allows links to be bound to ng-click.
@@ -73,7 +73,9 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, $filter, $location,
 	};
 
 	$scope.clearTableData = function(){
+		console.log('Clearin!');
 		$scope.myData = [];
+		$scope.mySelections = [];
 	};
 	$scope.mySelections = [];
     $scope.columnsSelected = [{field: 'Info', displayName: 'Info'}]; // Columns are properly set in callBlockchain().
@@ -90,11 +92,14 @@ lookupApp.controller('mainPageCtrl', function($scope, $http, $filter, $location,
 
     $scope.changeTab = function(tabNum){
     	$scope.visibleTab = tabNum;
-    	//FIXME!!!
     	//If data for the table is changed, and then the table tab is switched to, 
     	//the data will not be displayed properly unless the grid has been prompted to redraw/sort.
     	if (tabNum == 0){ //table tab.
-    		console.log($scope.gridOptions);
+    		//Use setTimeout to make sure that the tab is loaded first.
+    		setTimeout(function(){$scope.gridOptions.$gridServices.DomUtilityService.RebuildGrid(
+			    $scope.gridOptions.$gridScope, 
+			    $scope.gridOptions.ngGrid
+			); }, 1)
     	}
     }
 });

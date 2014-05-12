@@ -253,6 +253,14 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     color: white;
 }
 
+#info {
+    padding-top: 30px;
+}
+
+div.col-md-4 p {
+ text-align: justify   
+}
+
 .ng-table .plus, .ng-table .minus {
     font-weight: bold;
     padding-left: 18px;
@@ -317,11 +325,31 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     #headerwrap > section > div > div:nth-child(1) > div > form > button {
         width: 399px;
     }
+
+    .logo {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    }
 }
 
 @media (max-width: 768px) { 
     #headerwrap > section > div > div:nth-child(1) > div > form > button {
         width: 100%;
+    }
+    /* Centers Logo Image */
+    .logo {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    /* Half the height */
+    margin-left: -50px;
+    /* Half the width */
     }
  }
 
@@ -329,6 +357,7 @@ i.fa.fa-btc.largeicon, i.fa-spinner {
     border: 1px solid rgb(212,212,212);
     width: 100%;
 }
+
 
 
 .selectedItems {
